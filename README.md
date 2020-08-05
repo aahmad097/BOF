@@ -1,3 +1,3 @@
 # BOF
 
-POC for Cobalt Strike's Beacon Object Files
+POC(s) for Cobalt Strike's Beacon Object Files
