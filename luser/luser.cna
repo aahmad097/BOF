@@ -1,0 +1,37 @@
+# $1 = beacon ID
+# $2 = Domain\user
+# $3 = password
+
+alias luser {
+
+	local('$handle $data $args $domain $user $pass');
+	
+	#check argument count 
+	if (size(@_) != 3) {
+		
+		berror($1, "luser: not enough arguments")
+		return;
+		
+	}
+	
+	# read in arguments
+	($domain, $user) = split('\\\\', $2);
+	$pass 			 = $3;
+	
+	#read in our BOF file ... 
+	$handle = openf(script_resource("luser.x64.o")); # opens file 
+	$data 	= readb($handle, -1); # reads file data 
+	closef($handle); # closes file 
+	
+	# pack our arguments
+	$args = bof_pack($1, "zzz", $domain, $user, $pass);
+	
+	#announce to user 
+	btask($1, "create token as $2")
+	
+	# run a BOF 
+	beacon_inline_execute($1, $data, "go", $args);
+	
+	
+
+}
